@@ -22,6 +22,12 @@ public class PostFacebookController {
 	
 	@Autowired
 	private PostFacebookService postFacebookService;
+	
+	@PostMapping("/test")
+    public Mono<ResponseEntity<String>> getTest() {
+		System.out.println("post");
+		return null;
+    }
 
     @GetMapping("/user-info")
     public Mono<ResponseEntity<PostFacebookResponseDto>> getUserInfo() {
