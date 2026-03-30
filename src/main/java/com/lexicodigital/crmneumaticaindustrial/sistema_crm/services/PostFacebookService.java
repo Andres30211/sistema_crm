@@ -2,6 +2,7 @@ package com.lexicodigital.crmneumaticaindustrial.sistema_crm.services;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.repository.PostfacebookRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -25,11 +26,11 @@ public class PostFacebookService {
         this.webClient = webClientBuilder.baseUrl("https://graph.facebook.com/v25.0").build();
     }
 
-    public Mono<PostFacebookResponseDto> getFacebookUserData() {
+    public Mono<PostFacebookResponseDto> getSaveFacebookPosts() {
         return this.webClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/me/posts")
-                .queryParam("fields", "id,created_time,story,message")
+                .queryParam("fields", "id,created_time,story,message,likes,comments")
                 .queryParam("access_token", accessToken)
                 .build())
             .retrieve()
@@ -42,6 +43,12 @@ public class PostFacebookService {
             });
     }
     
-    
+    @Scheduled(fixedRate = 1800000) 
+    public void scheduledSync() {
+        getSaveFacebookPosts()
+            .doOnSuccess(res -> System.out.println("Sincronización automática completada"))
+            .doOnError(error -> System.out.println("Error en la Sincronización"))
+            .subscribe(); // Necesario para que empiece el flujo
+    }
 
 }

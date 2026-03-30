@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,21 +21,15 @@ public class PostFacebookController {
 	
 	@Autowired
 	private PostFacebookService postFacebookService;
-	
-	@PostMapping("/webhook")
-    public Mono<ResponseEntity<String>> getTest() {
-		System.out.println("post");
-		return null;
-    }
 
-    @GetMapping("/user-info")
+    @GetMapping("/seve-posts")
     public Mono<ResponseEntity<PostFacebookResponseDto>> getUserInfo() {
-        return this.postFacebookService.getFacebookUserData()
+        return this.postFacebookService.getSaveFacebookPosts()
             .map(userData -> ResponseEntity.ok(userData))
             .defaultIfEmpty(ResponseEntity.notFound().build());
     }
     
- // --- SECCIÓN WEBHOOK ---
+    // --- SECCIÓN WEBHOOK ---
 
     // 1. Validación para Meta (Configúralo en el panel de Developers)
     @GetMapping("/webhook")
