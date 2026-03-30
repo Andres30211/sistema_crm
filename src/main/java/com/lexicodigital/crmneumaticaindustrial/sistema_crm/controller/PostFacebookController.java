@@ -33,7 +33,7 @@ public class PostFacebookController {
  // --- SECCIÓN WEBHOOK ---
 
     // 1. Validación para Meta (Configúralo en el panel de Developers)
-    @PostMapping("/webhook")
+    @GetMapping("/webhook")
     public ResponseEntity<String> validarWebhook(
             @RequestParam("hub.mode") String mode,
             @RequestParam("hub.verify_token") String token,
