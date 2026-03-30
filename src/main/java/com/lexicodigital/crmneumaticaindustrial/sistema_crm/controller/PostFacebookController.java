@@ -1,6 +1,7 @@
 package com.lexicodigital.crmneumaticaindustrial.sistema_crm.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +28,22 @@ public class PostFacebookController {
             .map(userData -> ResponseEntity.ok(userData))
             .defaultIfEmpty(ResponseEntity.notFound().build());
     }
+    
+ // --- SECCIÓN WEBHOOK ---
+
+    // 1. Validación para Meta (Configúralo en el panel de Developers)
+    @GetMapping("/webhook")
+    public ResponseEntity<String> validarWebhook(
+            @RequestParam("hub.mode") String mode,
+            @RequestParam("hub.verify_token") String token,
+            @RequestParam("hub.challenge") String challenge) {
+        
+        // El "verify_token" es el que tú inventas en el panel de Facebook
+        if ("subscribe".equals(mode) && "crm_neumatica_v1".equals(token)) {
+            return ResponseEntity.ok(challenge);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
 
 }
