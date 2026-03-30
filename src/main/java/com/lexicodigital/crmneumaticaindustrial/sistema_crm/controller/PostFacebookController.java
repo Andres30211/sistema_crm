@@ -23,8 +23,8 @@ public class PostFacebookController {
 	private PostFacebookService postFacebookService;
 
     @GetMapping("/user-info")
-    public Mono<ResponseEntity<PostFacebookResponseDto>> getUserInfo(@RequestParam String token) {
-        return this.postFacebookService.getFacebookUserData(token)
+    public Mono<ResponseEntity<PostFacebookResponseDto>> getUserInfo() {
+        return this.postFacebookService.getFacebookUserData()
             .map(userData -> ResponseEntity.ok(userData))
             .defaultIfEmpty(ResponseEntity.notFound().build());
     }
