@@ -38,11 +38,20 @@ public class PostFacebookController {
             @RequestParam("hub.verify_token") String token,
             @RequestParam("hub.challenge") String challenge) {
         
-        // El "verify_token" es el que tú inventas en el panel de Facebook
+        // ESTO APARECERÁ EN LA PANTALLA NEGRA DE RAILWAY
+        System.out.println(">>> PETICIÓN DE FACEBOOK RECIBIDA <<<");
+        System.out.println("Modo recibido: " + mode);
+        System.out.println("Token recibido: " + token);
+        System.out.println("Challenge: " + challenge);
+
+        // Verificación
         if ("subscribe".equals(mode) && "crm_neumatica_v1".equals(token)) {
+            System.out.println("✅ TOKEN CORRECTO. Enviando respuesta a Facebook...");
             return ResponseEntity.ok(challenge);
+        } else {
+            System.out.println("❌ TOKEN INCORRECTO. Se esperaba 'crm_neumatica_v1' pero llegó: " + token);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
 
