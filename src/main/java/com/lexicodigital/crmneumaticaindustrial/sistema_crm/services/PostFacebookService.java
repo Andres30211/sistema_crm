@@ -30,7 +30,7 @@ public class PostFacebookService {
         return this.webClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/me/posts")
-                .queryParam("fields", "id,created_time,story,message,likes,comments")
+                .queryParam("fields", "id,created_time,story,message")
                 .queryParam("access_token", accessToken)
                 .build())
             .retrieve()

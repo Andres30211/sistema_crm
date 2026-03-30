@@ -21,9 +21,5 @@ public class PostFacebookDto {
 	private String story;
 	
 	private String message;
-	
-	private String likes;
-	
-	private String comments;
 
 }
