@@ -23,7 +23,7 @@ public class PostFacebookController {
 	@Autowired
 	private PostFacebookService postFacebookService;
 	
-	@PostMapping("/test")
+	@PostMapping("/webhook")
     public Mono<ResponseEntity<String>> getTest() {
 		System.out.println("post");
 		return null;
