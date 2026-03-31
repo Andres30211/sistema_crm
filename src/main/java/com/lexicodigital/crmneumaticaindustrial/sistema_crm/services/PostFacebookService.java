@@ -27,7 +27,7 @@ public class PostFacebookService {
 	@Transactional
 	public ResponseEntity<PostFacebookResponseDto> getSavePostfacebook() {
 	    
-	    PostFacebookResponseDto response = this.restTemplate.getForObject("https://graph.facebook.com/v25.0/me/posts?fields=id,created_time,story,message&access_token=".concat(accessToken), PostFacebookResponseDto.class);
+	    PostFacebookResponseDto response = this.restTemplate.getForObject("https://graph.facebook.com/v25.0/me/posts?fields=id,created_time,story,message,comments&access_token=".concat(accessToken), PostFacebookResponseDto.class);
 	
 	    Optional.ofNullable(response)
         .map(PostFacebookResponseDto::getData)
