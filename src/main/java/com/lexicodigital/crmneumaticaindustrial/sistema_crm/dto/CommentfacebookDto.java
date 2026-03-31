@@ -11,8 +11,6 @@ public class CommentfacebookDto {
     private String fbComentarioId;
     
     private String message;
-    
-    private String created_time;
 
     @JsonProperty("from")
     private FromFacebookDto from;

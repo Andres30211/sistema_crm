@@ -45,7 +45,6 @@ public class PostFacebookService {
 	    		.toList();
 
 	    if(!nuevosPosts.isEmpty()) {
-	    	
 	    	this.postfacebookRepository.saveAll(posts);
 	    }
 	    
