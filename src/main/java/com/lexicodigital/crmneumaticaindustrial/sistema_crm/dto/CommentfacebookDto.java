@@ -20,8 +20,10 @@ import lombok.Data;
 @Table(name = "post_comments")
 public class CommentfacebookDto {
 
+	public CommentfacebookDto() {
+	}
+
 	public CommentfacebookDto(Long idEntity2, String fbComentarioId2, String message2, PostFacebookDto postBBDD) {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Id
