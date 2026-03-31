@@ -1,15 +1,19 @@
 package com.lexicodigital.crmneumaticaindustrial.sistema_crm.services;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.repository.PostfacebookRepository;
 
+import jakarta.transaction.Transactional;
+
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.PostFacebookDto;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.PostFacebookResponseDto;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 @Service
 public class PostFacebookService {
@@ -17,38 +21,57 @@ public class PostFacebookService {
 	@Autowired
     private PostfacebookRepository postfacebookRepository;
 	
-	private WebClient webClient;
+	@Autowired
+	private RestTemplate restTemplate;
 	
-	private String accessToken = "EAAcQxNJPHU4BRDZCSA7DCHWBvmtBPUZCdSzPt1wiTgVi8byS5nQf5kxfmNeXhIXZB4MZAhVF5QP7CBdGhOC51JKoOaC7z53f5kC1BEKLSNS0khxjiygGfLaQ6JsmdkbroTMQZAgxjPr052GT3OyLDuq0qG8Vy3TVzoCe8VppnGiZCW3DRpfl0URvP3CptS7T0argjEYQ7VRYt6zHr0g93Cn3oXBdDqtxofQiTGd6AZD";
-
-    public PostFacebookService(WebClient.Builder webClientBuilder) {
-        // Base URL de la API de Graph
-        this.webClient = webClientBuilder.baseUrl("https://graph.facebook.com/v25.0").build();
-    }
-
-    public Mono<PostFacebookResponseDto> getSaveFacebookPosts() {
-        return this.webClient.get()
-            .uri(uriBuilder -> uriBuilder
-                .path("/me/posts")
-                .queryParam("fields", "id,created_time,story,message")
-                .queryParam("access_token", accessToken)
-                .build())
-            .retrieve()
-            .bodyToMono(PostFacebookResponseDto.class)
-            .flatMap(response -> {
-                // Tomamos la lista 'data' del DTO y la guardamos en Mongo
-                return Flux.fromIterable(response.getData())
-                    .flatMap(this.postfacebookRepository::save) // Guarda cada post reactivamente
-                    .then(Mono.just(response)); // Al final devuelve el DTO original
-            });
-    }
+	private String accessToken = "EAAcQxNJPHU4BRMOfYtVRQQcZAZAX76LMqakdu3MlFwYsYMIp0qxyjxUQmawafJVFfpKPHJVqncppe5CKBbBG7k4RuyxosZB5KjxdcNHrZCY8xIoEXPhTrQ4eDYbQJ7EY7YT9gyVGWbu3inZBjK0CLTQQRET33ZBA8P5lJ1Qr86K7VAHDIC5u2jDCZCoPgCYb1ZCDgC1ZCSvj3BY9NqrDENiNsD08f6ASI4jWJwSNBHgdLjoMQdHMxAx03fDfVIiE8J4aeeg26VUBhPqnT";
     
-    @Scheduled(fixedRate = 1800000) 
-    public void scheduledSync() {
-        getSaveFacebookPosts()
-            .doOnSuccess(res -> System.out.println("Sincronización automática completada"))
-            .doOnError(error -> System.out.println("Error en la Sincronización"))
-            .subscribe(); // Necesario para que empiece el flujo
+	@Transactional
+	public ResponseEntity<PostFacebookResponseDto> getSavePostfacebook() {
+	    
+	    // 1. Construcción correcta de la URL
+	    String url = UriComponentsBuilder.fromPath("https://graph.facebook.com/v25.0/me/posts")
+	            .queryParam("fields", "id,created_time,story,message")
+	            .queryParam("access_token", accessToken)
+	            .toUriString();
+
+	    // 2. Petición síncrona
+	    PostFacebookResponseDto response = restTemplate.getForObject(url, PostFacebookResponseDto.class);
+
+	    // 3. Lógica con API Stream
+	    if (response != null && response.getData() != null) {
+	        response.getData().stream()
+	            .map(this::mapDtoToEntity) // Convertimos el DTO a Entidad si es necesario
+	            .forEach(post -> {
+	                // JPA hace el Upsert automáticamente: 
+	                // Si el ID existe en la DB, hace UPDATE; si no, hace INSERT.
+	                post.setFechaCaptura(LocalDateTime.now());
+	                postfacebookRepository.save(post);
+	            });
+	    }
+
+	    return ResponseEntity.ok(response);
+	}
+
+	// Método auxiliar para asegurar que los datos estén listos para JPA
+	private PostFacebookDto mapDtoToEntity(PostFacebookDto dto) {
+	    PostFacebookDto entity = new PostFacebookDto();
+	    entity.setId(dto.getId());
+	    entity.setMessage(dto.getMessage());
+	    entity.setStory(dto.getStory());
+	    entity.setCreated_time(dto.getCreated_time());
+	    return entity;
+	}
+	
+	@Scheduled(fixedRate = 900000)
+    public void cronSincronizacionFacebook() {
+        System.out.println("Iniciando sincronización automática: " + LocalDateTime.now());
+        try {
+            this.getSavePostfacebook();
+            System.out.println("Sincronización completada con éxito.");
+        } catch (Exception e) {
+            System.err.println("Error en la tarea programada: " + e.getMessage());
+        }
     }
 
 }

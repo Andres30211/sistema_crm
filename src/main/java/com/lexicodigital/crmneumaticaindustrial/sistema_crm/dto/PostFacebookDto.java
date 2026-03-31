@@ -3,16 +3,19 @@ package com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
 @Table(name = "post_facebook")
 public class PostFacebookDto {
 	
-	@Id	
-	private String id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	private LocalDateTime fechaCaptura = LocalDateTime.now();
 	
