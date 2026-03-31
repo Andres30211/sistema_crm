@@ -5,11 +5,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.CommentfacebookDto;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.PostFacebookDto;
+import com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity.PostFacebookEntity;
 
 @Repository
-public interface PostfacebookRepository extends JpaRepository<PostFacebookDto, Long>{
+public interface PostfacebookRepository extends JpaRepository<PostFacebookEntity, Long>{
 	
 	Optional<PostFacebookDto> findByfbPostId(String fbPostId);
 
