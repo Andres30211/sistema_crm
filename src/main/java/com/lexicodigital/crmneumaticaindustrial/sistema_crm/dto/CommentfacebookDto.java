@@ -1,5 +1,6 @@
 package com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
@@ -37,5 +38,6 @@ public class CommentfacebookDto {
 
     @ManyToOne
     @JoinColumn(name = "post_id")
+    @JsonIgnore
     private PostFacebookDto post;
 }

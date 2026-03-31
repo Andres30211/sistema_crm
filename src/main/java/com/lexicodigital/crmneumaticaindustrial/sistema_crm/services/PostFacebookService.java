@@ -40,21 +40,24 @@ public class PostFacebookService {
 	                PostFacebookDto postBBDD = this.postfacebookRepository.findByfbPostId(dto.getFbPostId())
 	                                              .orElse(dto); // Si no existe, usamos el DTO nuevo como base
 
-	                // 2. Actualizar datos básicos (siempre viene bien refrescar message o story)
+	             // 2. Actualizar campos básicos
 	                postBBDD.setMessage(dto.getMessage());
 	                postBBDD.setStory(dto.getStory());
 	                postBBDD.setFechaCaptura(LocalDateTime.now());
 
-	                // 3. Extraer y actualizar conteos (Likes y Comments)
-	                // Esto sobreescribe los números viejos con los actuales de la API
-	                //postBBDD.setLikesCount(dto.getLikes().getSummary().getTotalCount());
-	                //postBBDD.setComentarios(dto.getComentarios().add(null));
-	                postBBDD.getComentarios().stream()
-        									 .map(c -> {
-        										 CommentfacebookDto commentfacebookDto = new CommentfacebookDto(c.getIdEntity(),c.getFbComentarioId(),c.getMessage(),postBBDD);
-        										 postBBDD.getComentarios().add(commentfacebookDto);
-        										 return commentfacebookDto;
-        									 });
+	                // 3. Lógica de Comentarios (IMPORTANTE)
+	                // Si el DTO que llegó de la API trae comentarios en su lista interna
+	                if (dto.getComentarios() != null) {
+	                    
+	                    // Limpiamos los anteriores para evitar duplicados en la base de datos
+	                    postBBDD.getComentarios().clear();
+
+	                    // Vinculamos cada comentario nuevo con el post actual
+	                    dto.getComentarios().forEach(c -> {
+	                        c.setPost(postBBDD); // Esto llena la columna post_id en la DB
+	                        postBBDD.getComentarios().add(c);
+	                    });
+	                }
 
 	                return postBBDD;
 	            })
