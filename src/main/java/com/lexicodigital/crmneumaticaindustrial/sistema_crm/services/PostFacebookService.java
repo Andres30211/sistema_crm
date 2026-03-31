@@ -4,13 +4,16 @@ import com.lexicodigital.crmneumaticaindustrial.sistema_crm.repository.Postfaceb
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.PostFacebookDto;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.PostFacebookResponseDto;
 
 @Service
@@ -29,12 +32,30 @@ public class PostFacebookService {
 	    
 	    PostFacebookResponseDto response = this.restTemplate.getForObject("https://graph.facebook.com/v25.0/me/posts?fields=id,created_time,story,message,comments&access_token=".concat(accessToken), PostFacebookResponseDto.class);
 	
-	    Optional.ofNullable(response)
-        .map(PostFacebookResponseDto::getData)
-        .ifPresent(posts -> posts.stream()
-            .peek(post -> post.setFechaCaptura(LocalDateTime.now())) // Seteamos la fecha de auditoría
-            .forEach(postfacebookRepository::save) // Guardamos cada uno en MySQL
-        );
+	    if (response != null && response.getData() != null) {
+	        List<PostFacebookDto> postsActualizados = response.getData().stream()
+	            .map(dto -> {
+	                // 1. Consultar si existe por el FB_ID (o ID de Facebook)
+	                PostFacebookDto postBBDD = this.postfacebookRepository.findByfbPostId(dto.getFbPostId())
+	                                              .orElse(dto); // Si no existe, usamos el DTO nuevo como base
+
+	                // 2. Actualizar datos básicos (siempre viene bien refrescar message o story)
+	                postBBDD.setMessage(dto.getMessage());
+	                postBBDD.setStory(dto.getStory());
+	                postBBDD.setFechaCaptura(LocalDateTime.now());
+
+	                // 3. Extraer y actualizar conteos (Likes y Comments)
+	                // Esto sobreescribe los números viejos con los actuales de la API
+	                //postBBDD.setLikesCount(dto.getLikes().getSummary().getTotalCount());
+	                //postBBDD.setCommentsCount(dto.getComments().getSummary().getTotalCount());
+
+	                return postBBDD;
+	            })
+	            .collect(Collectors.toList());
+
+	        // 4. Guardar todo el lote procesado
+	        this.postfacebookRepository.saveAll(postsActualizados);
+	    }
 
 	    return ResponseEntity.ok(response);
 	}
