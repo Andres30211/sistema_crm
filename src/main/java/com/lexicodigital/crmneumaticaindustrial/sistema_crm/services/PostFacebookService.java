@@ -4,13 +4,9 @@ import com.lexicodigital.crmneumaticaindustrial.sistema_crm.repository.Postfaceb
 
 import jakarta.transaction.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -37,12 +33,16 @@ public class PostFacebookService {
 	@Autowired
 	private FacebookMapper facebookMapper;
 	
-	private String accessToken = "EAAcQxNJPHU4BRKdEsOWOKmmwM3bnwdUupVRTflZC7NMZBt4qp4hsNBvaeF0wNlxQ1epQWZBS7MqOZCrW05n6HDJ6ohfyYr90Mm0BxaOfVY4uZBDZAYYrHSJWcZBzqKvGotZBoWrMfZCRo5tgu4BeB5ZAojTwsNvd0KkKXtMOIQaV9ZCBabuLD2vH1cCzS1pknLSo3naZAfayIl9af3HWwThqlgAGZCFtmsS7OTTZCZC1NVNR69STgZDZD";
+	@Autowired
+	private String tokenAccessPostFacebook;
+	
+	@Autowired
+	private String endpointAccessPostFacebook;
     
 	@Transactional
 	public void getSavePostfacebook() {
 	    
-	    PostFacebookResponseDto response = this.restTemplate.getForObject("https://graph.facebook.com/v25.0/me/posts?fields=id,created_time,story,message,comments&access_token=".concat(accessToken), PostFacebookResponseDto.class);
+	    PostFacebookResponseDto response = this.restTemplate.getForObject(this.endpointAccessPostFacebook.concat(this.tokenAccessPostFacebook), PostFacebookResponseDto.class);
 	
 	    for (PostFacebookDto postDto : response.getData()) {
 
