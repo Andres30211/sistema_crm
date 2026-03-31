@@ -20,7 +20,7 @@ public class PostFacebookEntity {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idEntity;
 
     @Column(unique = true)
     private String fbPostId;

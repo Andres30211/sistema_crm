@@ -17,7 +17,7 @@ public class CommentFacebookEntity {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idEntity;
 
     private String fbComentarioId;
 
