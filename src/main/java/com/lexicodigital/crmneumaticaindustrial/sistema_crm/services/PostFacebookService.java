@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.CommentfacebookDto;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.PostFacebookDto;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.PostFacebookResponseDto;
 
@@ -47,7 +48,13 @@ public class PostFacebookService {
 	                // 3. Extraer y actualizar conteos (Likes y Comments)
 	                // Esto sobreescribe los números viejos con los actuales de la API
 	                //postBBDD.setLikesCount(dto.getLikes().getSummary().getTotalCount());
-	                //postBBDD.setCommentsCount(dto.getComments().getSummary().getTotalCount());
+	                //postBBDD.setComentarios(dto.getComentarios().add(null));
+	                postBBDD.getComentarios().stream()
+        									 .map(c -> {
+        										 CommentfacebookDto commentfacebookDto = new CommentfacebookDto(c.getIdEntity(),c.getFbComentarioId(),c.getMessage(),postBBDD);
+        										 postBBDD.getComentarios().add(commentfacebookDto);
+        										 return commentfacebookDto;
+        									 });
 
 	                return postBBDD;
 	            })

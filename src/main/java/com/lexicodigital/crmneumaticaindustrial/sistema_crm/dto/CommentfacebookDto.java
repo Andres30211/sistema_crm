@@ -10,12 +10,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 @Entity
 @Table(name = "post_comments")
 public class CommentfacebookDto {
+
+	public CommentfacebookDto(Long idEntity2, String fbComentarioId2, String message2, PostFacebookDto postBBDD) {
+		// TODO Auto-generated constructor stub
+	}
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
