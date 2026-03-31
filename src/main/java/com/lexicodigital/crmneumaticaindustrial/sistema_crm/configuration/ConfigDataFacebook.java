@@ -6,7 +6,7 @@ import org.springframework.context.annotation.PropertySources;
 
 @Configuration
 @PropertySources({
-	@PropertySource("classpath:datafacebook.properties")
+	@PropertySource("classpath:dataFacebook.properties")
 })
 public class ConfigDataFacebook {
 
