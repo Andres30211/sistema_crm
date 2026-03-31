@@ -40,14 +40,19 @@ public class PostFacebookService {
 
 	    // 3. Lógica con API Stream
 	    if (response != null && response.getData() != null) {
-	        response.getData().stream()
-	            .map(this::mapDtoToEntity) // Convertimos el DTO a Entidad si es necesario
-	            .forEach(post -> {
-	                // JPA hace el Upsert automáticamente: 
-	                // Si el ID existe en la DB, hace UPDATE; si no, hace INSERT.
-	                post.setFechaCaptura(LocalDateTime.now());
-	                postfacebookRepository.save(post);
-	            });
+	        System.out.println("Posts recibidos de Facebook: " + response.getData().size()); // Log de control
+	        
+	        response.getData().forEach(dto -> {
+	            PostFacebookDto entity = new PostFacebookDto();
+	            entity.setId(dto.getId());
+	            entity.setMessage(dto.getMessage());
+	            entity.setStory(dto.getStory());
+	            entity.setCreated_time(dto.getCreated_time());
+	            entity.setFechaCaptura(LocalDateTime.now());
+
+	            System.out.println("Guardando post ID: " + entity.getId()); // Log de control
+	            postfacebookRepository.save(entity);
+	        });
 	    }
 
 	    return ResponseEntity.ok(response);
