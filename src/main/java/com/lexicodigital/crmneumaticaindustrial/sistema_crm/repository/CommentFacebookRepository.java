@@ -8,4 +8,5 @@ import com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity.CommentFacebo
 @Repository
 public interface CommentFacebookRepository extends JpaRepository<CommentFacebookEntity, Long>{
 
+	boolean existsByFbComentarioId(String fbComentarioId);
 }
