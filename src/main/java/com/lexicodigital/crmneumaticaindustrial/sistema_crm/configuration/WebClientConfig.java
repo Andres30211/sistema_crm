@@ -21,7 +21,7 @@ public class WebClientConfig {
 	
 	@Bean
 	public String endpointAccessPostFacebook() {
-		return this.tokenAccessPostsFacebook;
+		return this.endpointAccessPostsFacebook;
 	}
 
 	@Bean
