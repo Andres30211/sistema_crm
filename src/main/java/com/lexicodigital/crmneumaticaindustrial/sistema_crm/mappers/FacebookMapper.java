@@ -16,17 +16,17 @@ import com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity.PostFacebookE
 public interface FacebookMapper {
 
 	// 🔥 POST
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "idEntity", ignore = true)
     @Mapping(target = "fechaCaptura", expression = "java(java.time.LocalDateTime.now())")
-    @Mapping(target = "comentarios", source = "comments.data")
+    @Mapping(target = "comentarios", source = "commentsWrapperDto.data")
 	PostFacebookEntity toEntity(PostFacebookDto postFacebookDto);
     
     List<PostFacebookEntity> toEntityList(List<PostFacebookDto> dtoList);
 
     // 🔥 COMMENTS
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "userName", source = "from.name")
-    @Mapping(target = "userId", source = "from.id")
+    @Mapping(target = "idEntity", ignore = true)
+    @Mapping(target = "userName", source = "fromFacebookDto.name")
+    @Mapping(target = "userId", source = "fromFacebookDto.id")
     @Mapping(target = "post", ignore = true) // se asigna manualmente
     CommentFacebookEntity toEntity(CommentfacebookDto dto);
 
