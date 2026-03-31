@@ -4,15 +4,13 @@ import com.lexicodigital.crmneumaticaindustrial.sistema_crm.repository.Postfaceb
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.PostFacebookDto;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.PostFacebookResponseDto;
 
 @Service
@@ -24,59 +22,27 @@ public class PostFacebookService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	private String accessToken = "EAAcQxNJPHU4BRMOfYtVRQQcZAZAX76LMqakdu3MlFwYsYMIp0qxyjxUQmawafJVFfpKPHJVqncppe5CKBbBG7k4RuyxosZB5KjxdcNHrZCY8xIoEXPhTrQ4eDYbQJ7EY7YT9gyVGWbu3inZBjK0CLTQQRET33ZBA8P5lJ1Qr86K7VAHDIC5u2jDCZCoPgCYb1ZCDgC1ZCSvj3BY9NqrDENiNsD08f6ASI4jWJwSNBHgdLjoMQdHMxAx03fDfVIiE8J4aeeg26VUBhPqnT";
+	private String accessToken = "EAAcQxNJPHU4BRK85UgSHfENHUArP5m3yhUAkmuwkf0IGk5IULpXozEWBaBONOYQ7MhHqZAdXoU1yAjdcqQpfMqJUcgpd7sqCZBalnAdo5PJoladxcJrJzvZA3Ub8nx9S7IgqNWi1YILhBfurD18ItJ7u6D5QBMEksqGYNeX0ZBvS0REq6XKnpk6SoLuGvg4pT7BeN6ky5F2BU9kRZAA8s0pjAZAgJMzEkkzRIMFwZDZD";
     
 	@Transactional
 	public ResponseEntity<PostFacebookResponseDto> getSavePostfacebook() {
 	    
-	    // 1. Construcción correcta de la URL
-	    String url = UriComponentsBuilder.fromUriString("https://graph.facebook.com/v25.0/me/posts")
-	            .queryParam("fields", "id,created_time,story,message")
-	            .queryParam("access_token", accessToken)
-	            .toUriString();
-
-	    // 2. Petición síncrona
-	    PostFacebookResponseDto response = restTemplate.getForObject(url, PostFacebookResponseDto.class);
-
-	    // 3. Lógica con API Stream
-	    if (response != null && response.getData() != null) {
-	        System.out.println("Posts recibidos de Facebook: " + response.getData().size()); // Log de control
-	        
-	        response.getData().forEach(dto -> {
-	            PostFacebookDto entity = new PostFacebookDto();
-	            entity.setId(dto.getId());
-	            entity.setMessage(dto.getMessage());
-	            entity.setStory(dto.getStory());
-	            entity.setCreated_time(dto.getCreated_time());
-	            entity.setFechaCaptura(LocalDateTime.now());
-
-	            System.out.println("Guardando post ID: " + entity.getId()); // Log de control
-	            postfacebookRepository.save(entity);
-	        });
-	    }
+	    PostFacebookResponseDto response = this.restTemplate.getForObject("https://graph.facebook.com/v25.0/me/posts?fields=id,created_time,story,message&access_token=".concat(accessToken), PostFacebookResponseDto.class);
+	
+	    Optional.ofNullable(response)
+        .map(PostFacebookResponseDto::getData)
+        .ifPresent(posts -> posts.stream()
+            .peek(post -> post.setFechaCaptura(LocalDateTime.now())) // Seteamos la fecha de auditoría
+            .forEach(postfacebookRepository::save) // Guardamos cada uno en MySQL
+        );
 
 	    return ResponseEntity.ok(response);
 	}
-
-	// Método auxiliar para asegurar que los datos estén listos para JPA
-	private PostFacebookDto mapDtoToEntity(PostFacebookDto dto) {
-	    PostFacebookDto entity = new PostFacebookDto();
-	    entity.setId(dto.getId());
-	    entity.setMessage(dto.getMessage());
-	    entity.setStory(dto.getStory());
-	    entity.setCreated_time(dto.getCreated_time());
-	    return entity;
-	}
 	
-	@Scheduled(fixedRate = 900000)
-    public void cronSincronizacionFacebook() {
-        System.out.println("Iniciando sincronización automática: " + LocalDateTime.now());
-        try {
-            this.getSavePostfacebook();
-            System.out.println("Sincronización completada con éxito.");
-        } catch (Exception e) {
-            System.err.println("Error en la tarea programada: " + e.getMessage());
-        }
-    }
+	@Scheduled(fixedRate = 900000) // 15 minutos en milisegundos
+	public void scheduleFacebookSync() {
+	    System.out.println("Ejecutando sincronización automática...");
+	    this.getSavePostfacebook();
+	}
 
 }
