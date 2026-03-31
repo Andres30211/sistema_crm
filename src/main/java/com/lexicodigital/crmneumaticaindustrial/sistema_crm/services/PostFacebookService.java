@@ -88,8 +88,13 @@ public class PostFacebookService {
 	
 	@Scheduled(fixedRate = 900000) // 15 minutos en milisegundos
 	public void scheduleFacebookSync() {
-	    System.out.println("Ejecutando sincronización automática...");
-	    this.getSavePostfacebook();
+		try {
+			System.out.println("Ejecutando sincronización automática...");
+		    this.getSavePostfacebook();
+		} catch (Exception e) {
+			System.out.println("Error en la llamada del servicio: ".concat(e.getMessage()));
+		}
+	    
 	}
 
 }
