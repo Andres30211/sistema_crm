@@ -30,7 +30,7 @@ public class PostFacebookService {
 	public ResponseEntity<PostFacebookResponseDto> getSavePostfacebook() {
 	    
 	    // 1. Construcción correcta de la URL
-	    String url = UriComponentsBuilder.fromPath("https://graph.facebook.com/v25.0/me/posts")
+	    String url = UriComponentsBuilder.fromUriString("https://graph.facebook.com/v25.0/me/posts")
 	            .queryParam("fields", "id,created_time,story,message")
 	            .queryParam("access_token", accessToken)
 	            .toUriString();

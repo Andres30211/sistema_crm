@@ -15,8 +15,7 @@ import lombok.Data;
 public class PostFacebookDto {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private String id;
 	
 	private LocalDateTime fechaCaptura = LocalDateTime.now();
 	
