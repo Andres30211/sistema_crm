@@ -2,6 +2,7 @@ package com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -19,8 +20,10 @@ public class PostFacebookDto {
 	
 	private String created_time;
 	
+	@Column(columnDefinition = "TEXT")
 	private String story;
 	
+	@Column(columnDefinition = "TEXT")
 	private String message;
 
 }
