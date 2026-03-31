@@ -71,7 +71,7 @@ public class PostFacebookService {
 
 	            for (CommentfacebookDto commentDto : postDto.getComments().getData()) {
 
-	                boolean exists = this.postfacebookRepository
+	                boolean exists = this.commentFacebookRepository
 	                        .existsByFbComentarioId(commentDto.getFbComentarioId());
 
 	                if (!exists) {
