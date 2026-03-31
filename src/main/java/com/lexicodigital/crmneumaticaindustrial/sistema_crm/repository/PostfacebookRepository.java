@@ -11,6 +11,6 @@ import com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity.PostFacebookE
 @Repository
 public interface PostfacebookRepository extends JpaRepository<PostFacebookEntity, Long>{
 	
-	Optional<PostFacebookDto> findByfbPostId(String fbPostId);
+	Boolean existsByfbPostId(String fbPostId);
 
 }

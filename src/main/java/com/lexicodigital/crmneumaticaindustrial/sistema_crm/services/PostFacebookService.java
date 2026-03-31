@@ -39,8 +39,15 @@ public class PostFacebookService {
 	    PostFacebookResponseDto response = this.restTemplate.getForObject("https://graph.facebook.com/v25.0/me/posts?fields=id,created_time,story,message,comments&access_token=".concat(accessToken), PostFacebookResponseDto.class);
 	
 	    List<PostFacebookEntity> posts = this.facebookMapper.toEntityList(response.getData());
+	    
+	    List<PostFacebookEntity> nuevosPosts = posts.stream()
+	    		.filter(post -> !this.postfacebookRepository.existsByfbPostId(post.getFbPostId()))
+	    		.toList();
 
-	    this.postfacebookRepository.saveAll(posts);
+	    if(!nuevosPosts.isEmpty()) {
+	    	this.postfacebookRepository.saveAll(posts);
+	    }
+	    
 	}
 	
 	@Scheduled(fixedRate = 900000) // 15 minutos en milisegundos
