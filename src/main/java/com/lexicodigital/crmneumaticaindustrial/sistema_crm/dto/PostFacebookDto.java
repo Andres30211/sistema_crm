@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
@@ -23,6 +24,7 @@ public class PostFacebookDto {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
     private Long id;
 
 	@JsonProperty(value = "id")
