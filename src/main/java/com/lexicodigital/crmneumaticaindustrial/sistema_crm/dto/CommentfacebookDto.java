@@ -19,7 +19,7 @@ public class CommentfacebookDto {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idEntity;
 
 	@JsonProperty(value = "id")
     private String fbComentarioId; // ID que viene de Facebook
