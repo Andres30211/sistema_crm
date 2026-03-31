@@ -16,6 +16,7 @@ public class PostFacebookDto {
 	
 	private String message;
 	
-    private CommentsWrapperDto commentsWrapperDto;
+	@JsonProperty("comments")
+    private CommentsWrapperDto comments;
 
 }

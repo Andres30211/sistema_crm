@@ -14,5 +14,6 @@ public class CommentfacebookDto {
     
     private String created_time;
 
-    private FromFacebookDto fromFacebookDto;
+    @JsonProperty("from")
+    private FromFacebookDto from;
 }
