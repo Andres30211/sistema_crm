@@ -1,4 +1,4 @@
-/*package com.lexicodigital.crmneumaticaindustrial.sistema_crm.repository;
+package com.lexicodigital.crmneumaticaindustrial.sistema_crm.repository;
 
 import java.util.Optional;
 
@@ -12,4 +12,4 @@ public interface PostfacebookRepository extends JpaRepository<PostFacebookEntity
 	
 	Optional<PostFacebookEntity> findByFbPostId(String fbPostId);
 
-}*/
+}

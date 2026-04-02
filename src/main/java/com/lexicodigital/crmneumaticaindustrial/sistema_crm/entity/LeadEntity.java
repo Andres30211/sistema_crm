@@ -1,4 +1,4 @@
-/*package com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity;
+package com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -28,4 +28,4 @@ public class LeadEntity {
     private String formId;
     private String formName;
     
-}*/
+}

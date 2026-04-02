@@ -1,4 +1,4 @@
-/*package com.lexicodigital.crmneumaticaindustrial.sistema_crm.services;
+package com.lexicodigital.crmneumaticaindustrial.sistema_crm.services;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.repository.CommentFacebookRepository;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.repository.PostfacebookRepository;
 
@@ -97,4 +97,4 @@ public class PostFacebookService {
 	    
 	}
 
-}*/
+}
