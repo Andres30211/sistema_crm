@@ -1,4 +1,4 @@
-package com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto;
+package com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.postsandcommentsfacebook;
 
 import java.util.List;
 

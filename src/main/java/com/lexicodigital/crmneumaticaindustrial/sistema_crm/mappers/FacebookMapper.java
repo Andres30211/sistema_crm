@@ -7,8 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.CommentfacebookDto;
-import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.PostFacebookDto;
+import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.postsandcommentsfacebook.CommentfacebookDto;
+import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.postsandcommentsfacebook.PostFacebookDto;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity.CommentFacebookEntity;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity.PostFacebookEntity;
 

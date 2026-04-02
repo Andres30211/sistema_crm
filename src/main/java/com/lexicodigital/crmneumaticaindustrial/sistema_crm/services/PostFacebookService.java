@@ -11,9 +11,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.CommentfacebookDto;
-import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.PostFacebookDto;
-import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.PostFacebookResponseDto;
+import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.postsandcommentsfacebook.CommentfacebookDto;
+import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.postsandcommentsfacebook.PostFacebookDto;
+import com.lexicodigital.crmneumaticaindustrial.sistema_crm.dto.postsandcommentsfacebook.PostFacebookResponseDto;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity.CommentFacebookEntity;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity.PostFacebookEntity;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.mappers.FacebookMapper;
@@ -86,7 +86,7 @@ public class PostFacebookService {
 	    
 	}
 	
-	@Scheduled(fixedRate = 900000) // 15 minutos en milisegundos
+	/*@Scheduled(fixedRate = 900000) // 15 minutos en milisegundos
 	public void scheduleFacebookSync() {
 		try {
 			System.out.println("Ejecutando sincronización automática...");
@@ -95,6 +95,6 @@ public class PostFacebookService {
 			System.out.println("Error en la llamada del servicio: ".concat(e.getMessage()));
 		}
 	    
-	}
+	}*/
 
 }
