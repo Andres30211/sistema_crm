@@ -1,4 +1,4 @@
-package com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity;
+/*package com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,4 +32,4 @@ public class CommentFacebookEntity {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private PostFacebookEntity post;
-}
+}*/

@@ -1,4 +1,4 @@
-package com.lexicodigital.crmneumaticaindustrial.sistema_crm.services;
+/*package com.lexicodigital.crmneumaticaindustrial.sistema_crm.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,4 +41,4 @@ public class LeadService {
 	
 	    repository.saveAll(entities);
 	}
-}
+}*/

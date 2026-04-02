@@ -1,4 +1,4 @@
-package com.lexicodigital.crmneumaticaindustrial.sistema_crm.mappers;
+/*package com.lexicodigital.crmneumaticaindustrial.sistema_crm.mappers;
 
 import java.util.List;
 
@@ -39,4 +39,4 @@ public interface FacebookMapper {
             post.getComentarios().forEach(c -> c.setPost(post));
         }
     }
-}
+}*/

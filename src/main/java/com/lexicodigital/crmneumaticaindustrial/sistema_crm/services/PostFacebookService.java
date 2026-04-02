@@ -1,4 +1,4 @@
-package com.lexicodigital.crmneumaticaindustrial.sistema_crm.services;
+/*package com.lexicodigital.crmneumaticaindustrial.sistema_crm.services;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.repository.CommentFacebookRepository;
 import com.lexicodigital.crmneumaticaindustrial.sistema_crm.repository.PostfacebookRepository;
 
@@ -86,7 +86,7 @@ public class PostFacebookService {
 	    
 	}
 	
-	/*@Scheduled(fixedRate = 900000) // 15 minutos en milisegundos
+	@Scheduled(fixedRate = 900000) // 15 minutos en milisegundos
 	public void scheduleFacebookSync() {
 		try {
 			System.out.println("Ejecutando sincronización automática...");
@@ -95,6 +95,6 @@ public class PostFacebookService {
 			System.out.println("Error en la llamada del servicio: ".concat(e.getMessage()));
 		}
 	    
-	}*/
+	}
 
-}
+}*/

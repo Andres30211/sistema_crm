@@ -1,4 +1,4 @@
-package com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity;
+/*package com.lexicodigital.crmneumaticaindustrial.sistema_crm.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,4 +37,4 @@ public class PostFacebookEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentFacebookEntity> comentarios;
-}
+}*/

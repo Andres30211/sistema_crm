@@ -1,4 +1,4 @@
-package com.lexicodigital.crmneumaticaindustrial.sistema_crm.mappers;
+/*package com.lexicodigital.crmneumaticaindustrial.sistema_crm.mappers;
 
 import java.util.List;
 
@@ -60,4 +60,4 @@ public interface LeadFacebookMapper {
             lead.setFullName(lead.getFullName().trim());
         }
     }
-}
+}*/
